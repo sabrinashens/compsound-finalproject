@@ -19,99 +19,74 @@ let notetoPitch = {
     "B": 71,
 };
 
-let scaletoNum = {
-    "3rd": 2,
-    "5th": 3,
-    "7th": 4,
-    "9th": 5,
-    "11th": 6,
-    "13th": 7,
-};
-
 let majorScale = [0, 4, 7, 11, 14, 17, 21];
 let minorScale = [0, 3, 7, 10, 14, 17, 21];
 
 function parseCode(code) {
-    let chords = code.split(" "); //e.g., 2@C:9th[4]
-
+    chords = code.split(" "); 
     chords = chords.map(chord => {
-        let noteCode = chord.split(":"); //[2@C, 9th[4]]
+        if (chord.at(-1) == "]") { //e.g., Cm9[2]
+            let noteCode = chord.split("["); //[Cm9, 2]]
+            loop = noteCode[1].slice(0, -1); //2  
+            factor = noteCode[0].at(-1); //9
+            root = noteCode[0].slice(0, -1); //Cm
+        }
+        else {  //e.g., Cm9 only plays once
+        	loop = 1; //1
+            factor = chord.at(-1); //9
+            root = chord.slice(0, -1); //Cm
+        }
+        factor = (factor*1 + 1) / 2 //conversion formula from factor to number, 5
+        var chordMelody = new Array(factor).fill(0); //create an array of factor
 
-        let scaleNloops = noteCode[1].split("["); //[9th, 4]]
-        let loops = scaleNloops[1].split("]"); //[4, ]]
-        loops = loops[0]; //4
-        let scale = scaleNloops[0]; //9th
-        let nth = scaletoNum[scale]; //mapped into 5
-
-        let root = noteCode[0].split("@"); //[2, C]
-        let length = root[0]; //2
-        root = root[1]; //C
-
-        let chordMelody = new Array(nth).fill(0); //[0, 0, 0, 0, 0]
-        if (root.at(-1) == "m") { 
-            //if a minor chord
-            root = root.slice(0,-1);
-            let pitch = notetoPitch[root];
-
-            for (var i = 0; i < nth; i++) {
+        //if a minor chord
+        if (root.at(-1) == "m") {  
+            let pitch = notetoPitch[root.slice(0,-1)];
+            for (var i = 0; i < factor; i++) {
                chordMelody[i] = minorScale[i] + pitch; 
-            }
+            } 
         }  
-        else { 
-            //if a major chord
-            let pitch = notetoPitch[root]; //mapped into 60
-
-            for (var i = 0; i < nth; i++) {
+        //if a major chord
+        else {  
+            let pitch = notetoPitch[root];
+            for (var i = 0; i < factor; i++) {
                 chordMelody[i] = majorScale[i] + pitch;
-            }// [60, 64, 67, 71, 74]
+            }
         }
 
         return {
-            "length": length*1,
             "notes": chordMelody,
-            "loops": loops*1
+            "loop": loop*1
         };
     });
-
     return chords;
 }
 
-function genSequence(length, note, tempo) {
+function genSequence(note, tempo) {
+    var length = Math.random() + 1;
     sequence.push({
         note: note,
         startTime: startTime,
-        endTime: startTime + length/tempo
+        endTime: startTime + 2/tempo
     });
-
-    startTime += length/tempo;  
-    return sequence
+    startTime += 2/tempo;  
+    return sequence;
 }
 
 const playButton = document.getElementById('play');
 playButton.addEventListener("click", function () {
     code = document.getElementById('code').value;
     tempo = document.getElementById('tempo').value / 10;
-
     var chords = parseCode(code);
-    
     sequence = [];
     startTime = 0;
     for (var i = 0; i < chords.length; i++) {
-        let length = chords[i].length;
         let chordNotes= chords[i].notes;
-        chordNotes = new Array(chords[i].loops).fill(chordNotes).flat();
+        chordNotes = new Array(chords[i].loop).fill(chordNotes).flat();
         for (var j = 0; j < chordNotes.length; j++) {
-            genSequence(length, chordNotes[j], tempo)
+            genSequence(chordNotes[j], tempo)
         }
     }
-
-    audioCtx = new (window.AudioContext || window.webkitAudioContext);
-    osc = audioCtx.createOscillator();
-    gainNode = audioCtx.createGain();
-    osc.connect(gainNode).connect(audioCtx.destination);
-    osc.start();
-    gainNode.gain.value = 0;
-
     playNotes(sequence);
 })
 
@@ -120,6 +95,12 @@ function midiToFreq(m) {
 }
 
 function playNotes(noteList) {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext);
+    osc = audioCtx.createOscillator();
+    gainNode = audioCtx.createGain();
+    osc.connect(gainNode).connect(audioCtx.destination);
+    osc.start();
+    gainNode.gain.value = 0;
     noteList.forEach(note => {
         playNote(note);
     }); 
@@ -140,4 +121,3 @@ function copyExample() {
     document.getElementById('copy').style.backgroundColor = "black";
     document.getElementById('copy').innerHTML = "Copied";
 }
-
