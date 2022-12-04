@@ -2,7 +2,6 @@
 <html>
   <meta charset="utf‐8">
   <title> Final Project </title>
-</html>
 
 <head>
 <style>
@@ -40,18 +39,18 @@
   cursor: pointer;
 }
 </style>
-<p>
-Example: <i>2@C:9th 1@C#m:3rd 3@Am:5th</i>
-</p>
 </head>
 
 <body>
+  <br><input type="text" value="2@C:9th[3] 2@Am:9th[3] 2@Fm:9th[3] 2@Dm:9th[3]" id="example" style="width:315px; border:none">
+  <button onclick="copyExample()" id ="copy" style = "background-color:white; cursor: pointer">Copy</button><br><br>
   <input type="text" id="code" style="width:500px; background-color:white">
   <button id = "play" style = "background-color:white; cursor: pointer">Play</button><br><br>
   <div class="slidecontainer">
     <label for = "tempo">TEMPO:</label>
-    <input type="range" min="1" max="200" value="100" class="slider" id="tempo">
+    <input type="range" min="50" max="150" value="100" class="slider" id="tempo">
   </div><br><br>
-
   <script src = "main.js"></script>
 </body>
+</html>
+
