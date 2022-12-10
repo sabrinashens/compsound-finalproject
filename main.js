@@ -28,10 +28,16 @@ let augmentedScale = [0, 4, 7, 10, 14];
 function parseCode(code) {
     chords = code.split(" "); 
     chords = chords.map(chord => { //e.g., 4@Cm9'1[2]
-    	chord = chord.split("@"); //[4, Cm9'1[2]]
-       	let beats = chord[0] * 1; //4
-        chord = chord[1]; //Cm9'1[2]
-
+        //Beats
+        if (chord.at(1) == "@") {
+            chord = chord.split("@"); //[4, Cm9'1[2]]
+            beats = chord[0] * 1; //4
+            chord = chord[1]; //Cm9'1[2]
+        }
+        else { //Cm9'1[2]
+            beats = 1
+        }
+        
         if (chord.at(-1) == "]") { //Cm9'1[2]
             let noteCode = chord.split("["); //[Cm9'1, 2]]
             loop = noteCode[1].slice(0, -1); //2

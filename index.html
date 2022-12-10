@@ -5,8 +5,8 @@
 
 <head>
   <input type="text" 
-  value="2@C9'1 2@Am9[2] 1@G7 1@Em9 2@D9 1@D9'1 1@F7[2] 1@E7'1 1@B9" 
-  id="example" style="width:455px; border:none">
+  value="2@C9'1 2@Am9[2] G7 Em9 2@D9 D9'1 F7[2] E7'1 B9" 
+  id="example" style="width:330px; border:none">
 
   <button onclick="copyExample()" id ="copy" 
   style = "background-color:white; cursor: pointer">Copy</button>
@@ -61,12 +61,22 @@
  
   <div id = "tut" style = "color:black; width:460px; visibility:hidden; height:560px;
     position:absolute; right:2%; top:7%; overflow:auto">
-    <h3>Beats@Root+Chord+Scale'Inversion([Loop])</h3>
-    <p><b>E.g., 1@C9'1, 2@Adim9[2]</b></p><br>
-    <h4>  ❒ Beats: ℤ@ (ℤ as a positive integer)</h4>
-    <p><i>Recommended: 4@, 2@, 1@ (whole, half, quarter)</i></p><br>
+    <img src="intro.png" style="width:90%">
+    <h3>Required: Root+Chord+Scale</h3>
+    <h4 style = "color:rgb(30, 54, 116)"><i>E.g., C9, Cm7, Cdim5, Caug3</i></h4>
+    <h3>Optional: Beats@Root+Chord+Scale'Inversion[Loop]</h3>
+    <h4 style = "color:rgb(157, 26, 26)"><i>E.g., 2@C9, Cm7'1, Cdim5[2], 4@Caug3'2[3]</i></h4>
+    <h3>Chords are separated by space</h3>
+    <h4 style = "color:rgb(30, 54, 116)"><i>=> C9 Cm7 Cdim5 Caug3</i></h4>
+    <h4 style = "color:rgb(157, 26, 26)"><i>=> 2@C9 Cm7'1 Cdim5[2] 4@Caug3'2[3]</i></h4><br>☟ ☟ ☟<br><br>
 
-    <h4> ❒ Root: C, C#, D, D#, E, F, F#, G, G#, A, A#, B</h4><br>
+    <p>_________________________________________________________</p>
+    <h4>  ❒ Beats: \ or ℤ+@ (ℤ+ as a positive integer)</h4>
+    <p><i>Beats=1 => \  (leave it blank)</i></p>
+    <p><i>Suggestec: 4@, 2@, \ (whole, half, quarter)</i></p><br>
+
+    <h4> ❒ Root: C, C#, D, D#, E, F, F#, G, G#, A, A#, B</h4>
+    <img src="keyboard.png" style = "width:40%"><br><br>
 
     <h4> ❒ Chord: \ , m, dim, aug</h4>
     <p><i> major, minor, diminished, augmented</i></p><br>
@@ -77,11 +87,13 @@
     <p><i> (root, 3rd, 5th), </i></p>
     <p><i> (root, 3rd, 5th, 7th), </i></p>
     <p><i> (root, 3rd, 5th, 7th, 9th) </i></p><br>
-    <h4> ❒ Inversion: \ or 'ℤ</h4>
+    
+    <h4> ❒ Inversion: \ or 'ℤ+</h4>
+    <p><i>\:  (root, 3rd, ...) </i></p>
     <p><i>'1:  (root, 3rd, ...) => (3rd, ..., root + an octave) </i></p>
     <p><i>'2:  (root, 3rd, ...) => (..., root + an octave, 3rd + an octave) </i></p>
     <p><i>...</i></p><br>
-    <h4> ❒ Loop: \ or [ℤ] </h4>
+    <h4> ❒ Loop: \ or [ℤ+] </h4>
     </div><br><br>
   <script src = "main.js"></script>
 </body>
