@@ -19,13 +19,19 @@ let notetoPitch = {
     "B": 71,
 };
 
-let majorScale = [0, 4, 7, 11, 14, 17, 21];
-let minorScale = [0, 3, 7, 10, 14, 17, 21];
+let majorScale = [0, 4, 7, 11, 14];
+let minorScale = [0, 3, 7, 10, 14];
+let diminishedScale = [0, 3, 6, 11, 14];
+let augmentedScale = [0, 4, 7, 10, 14]
 
 function parseCode(code) {
     chords = code.split(" "); 
-    chords = chords.map(chord => {
-        if (chord.at(-1) == "]") { //e.g., Cm9[2]
+    chords = chords.map(chord => { //e.g., 4@Cm9[2]
+    	chord = chord.split("@"); //[4, Cm9[2]]
+       	let beats = chord[0] * 1;
+        chord = chord[1];
+
+        if (chord.at(-1) == "]") { //Cm9[2]
             let noteCode = chord.split("["); //[Cm9, 2]]
             loop = noteCode[1].slice(0, -1); //2  
             factor = noteCode[0].at(-1); //9
@@ -36,16 +42,31 @@ function parseCode(code) {
             factor = chord.at(-1); //9
             root = chord.slice(0, -1); //Cm
         }
+
         factor = (factor*1 + 1) / 2 //conversion formula from factor to number, 5
         var chordMelody = new Array(factor).fill(0); //create an array of factor
 
         //if a minor chord
-        if (root.at(-1) == "m") {  
+        if (root.at(-1) == "m" && root.at(-2) != "i") {  
             let pitch = notetoPitch[root.slice(0,-1)];
             for (var i = 0; i < factor; i++) {
                chordMelody[i] = minorScale[i] + pitch; 
             } 
         }  
+        //if a dim chord e.g., Cdim
+        else if (root.at(-2) == "i") {
+            let pitch = notetoPitch[root.slice(0,-3)];
+            for (var i = 0; i < factor; i++) {
+               chordMelody[i] = diminishedScale[i] + pitch; 
+            } 
+        }
+        //if a aug chord, e.g., Caug
+        else if (root.at(-1) == "g") {
+            let pitch = notetoPitch[root.slice(0,-3)];
+            for (var i = 0; i < factor; i++) {
+               chordMelody[i] = augmentedScale[i] + pitch; 
+            } 
+        }
         //if a major chord
         else {  
             let pitch = notetoPitch[root];
@@ -56,20 +77,20 @@ function parseCode(code) {
 
         return {
             "notes": chordMelody,
-            "loop": loop*1
+            "loop": loop*1,
+            "beats": beats
         };
     });
     return chords;
 }
 
-function genSequence(note, tempo) {
-    var length = Math.random() + 1;
+function genSequence(note, beats, tempo) {
     sequence.push({
         note: note,
         startTime: startTime,
-        endTime: startTime + 2/tempo
+        endTime: startTime + beats/tempo
     });
-    startTime += 2/tempo;  
+    startTime += beats/tempo;  
     return sequence;
 }
 
@@ -77,14 +98,18 @@ const playButton = document.getElementById('play');
 playButton.addEventListener("click", function () {
     code = document.getElementById('code').value;
     tempo = document.getElementById('tempo').value / 10;
+
     var chords = parseCode(code);
+
     sequence = [];
     startTime = 0;
+
     for (var i = 0; i < chords.length; i++) {
         let chordNotes= chords[i].notes;
         chordNotes = new Array(chords[i].loop).fill(chordNotes).flat();
+
         for (var j = 0; j < chordNotes.length; j++) {
-            genSequence(chordNotes[j], tempo)
+            genSequence(chordNotes[j], chords[i].beats, tempo)
         }
     }
     playNotes(sequence);
@@ -114,10 +139,27 @@ function playNote(note) {
     gainNode.gain.setTargetAtTime(0, note.endTime + offset - 0.05, 0.01)
 }
 
+//frontend stuffs
 function copyExample() {
     var copyText = document.getElementById("example");
     navigator.clipboard.writeText(copyText.value);
     document.getElementById('copy').style.color = "white";
     document.getElementById('copy').style.backgroundColor = "black";
     document.getElementById('copy').innerHTML = "Copied";
+}
+
+buttonState = false;
+function displayText() {
+    if (buttonState == false) {
+        document.getElementById("tut").style.visibility = "visible";
+        document.getElementById('tutorial').style.color = "white";
+        document.getElementById('tutorial').style.backgroundColor = "black";
+        buttonState = true;
+    }
+    else if (buttonState == true) {
+        document.getElementById("tut").style.visibility = "hidden";
+        document.getElementById('tutorial').style.color = "black";
+        document.getElementById('tutorial').style.backgroundColor = "white";
+        buttonState = false;
+    }
 }
