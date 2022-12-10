@@ -22,23 +22,39 @@ let notetoPitch = {
 let majorScale = [0, 4, 7, 11, 14];
 let minorScale = [0, 3, 7, 10, 14];
 let diminishedScale = [0, 3, 6, 11, 14];
-let augmentedScale = [0, 4, 7, 10, 14]
+let augmentedScale = [0, 4, 7, 10, 14];
+
 
 function parseCode(code) {
     chords = code.split(" "); 
-    chords = chords.map(chord => { //e.g., 4@Cm9[2]
-    	chord = chord.split("@"); //[4, Cm9[2]]
-       	let beats = chord[0] * 1;
-        chord = chord[1];
+    chords = chords.map(chord => { //e.g., 4@Cm9'1[2]
+    	chord = chord.split("@"); //[4, Cm9'1[2]]
+       	let beats = chord[0] * 1; //4
+        chord = chord[1]; //Cm9'1[2]
 
-        if (chord.at(-1) == "]") { //Cm9[2]
-            let noteCode = chord.split("["); //[Cm9, 2]]
-            loop = noteCode[1].slice(0, -1); //2  
+        if (chord.at(-1) == "]") { //Cm9'1[2]
+            let noteCode = chord.split("["); //[Cm9'1, 2]]
+            loop = noteCode[1].slice(0, -1); //2
+            if (noteCode[0].at(-2) == "'") {
+                noteCode = noteCode[0].split("'"); //[Cm9, 1]
+                inversion = noteCode[1]; //1
+            }
+            else {
+            	inversion = 0;
+            }
             factor = noteCode[0].at(-1); //9
             root = noteCode[0].slice(0, -1); //Cm
         }
-        else {  //e.g., Cm9 only plays once
+        else {  //e.g., Cm9'1 only plays once
         	loop = 1; //1
+            if (chord.at(-2) == "'") {
+                chord = chord.split("'") //[Cm9, 1]
+                inversion = chord[1];
+                chord = chord[0];
+            }
+            else {
+            	inversion = 0;
+            }
             factor = chord.at(-1); //9
             root = chord.slice(0, -1); //Cm
         }
@@ -74,14 +90,25 @@ function parseCode(code) {
                 chordMelody[i] = majorScale[i] + pitch;
             }
         }
-
+        
+        Inversion(inversion, chordMelody);
+        chordMelody = chordMelody.slice(inversion);
+        
         return {
             "notes": chordMelody,
             "loop": loop*1,
             "beats": beats
         };
     });
+    
     return chords;
+}
+
+function Inversion(inversion, chordMelody) {
+    for (var i = 0; i < inversion; i++) { 
+    	chordMelody.push(chordMelody[i]+12); // move up an octave
+    }
+    return chordMelody
 }
 
 function genSequence(note, beats, tempo) {
@@ -139,7 +166,6 @@ function playNote(note) {
     gainNode.gain.setTargetAtTime(0, note.endTime + offset - 0.05, 0.01)
 }
 
-//frontend stuffs
 function copyExample() {
     var copyText = document.getElementById("example");
     navigator.clipboard.writeText(copyText.value);
