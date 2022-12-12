@@ -4,9 +4,7 @@
   <title> Final Project </title>
 
 <head>
-  <input type="text" 
-  value="2@C9'1 2@Am9[2] G7 Em9 2@D9 D9'1 F7[2] E7'1 B9" 
-  id="example" style="width:330px; border:none">
+  <input type="text" value="2@C9'1 2@Am9[2] G7 Em9 2@D9 D9'1 F7[2] E7'1 B9" id="example" style="width:325px; border:none">
 
   <button onclick="copyExample()" id ="copy" 
   style = "background-color:white; cursor: pointer">Copy</button>
@@ -56,11 +54,31 @@
     <input type="range" min="50" max="150" value="100" class="slider" id="tempo">
     <i style="color:white">___________________________________________________________________</i>
     <button id = "tutorial" onclick="displayText()" style = "background-color:white; cursor: pointer">Tutorials</button>
-    <button id = "play" style = "background-color:white; cursor: pointer">Play</button><br><br>
+    <button id = "play" style = "background-color:white; cursor: pointer">Play</button><br>
+    <form id = "Waveform">
+      <l>WAVEFORM:</l>
+      <input type="radio" id="sine" name="waveform" value="sine" checked>
+      <label for="sine">SINE</label>
+      <input type="radio" id="triangle" name="waveform" value="triangle">
+      <label for="triangle">TRIANGLE</label>
+      <input type="radio" id="square" name="waveform" value="square">
+      <label for="square">SQUARE</label>    
+    </form>
+
+    <form id="Envelope">
+    <l>ENVELOPE:</l>
+     <input type="radio" id="AD" name="envelope" value="AD" checked>
+     <label for="AD">AD</label>
+     <input type="radio" id="ADSR" name="envelope" value="ADSR">
+     <label for="ADSR">ADSR</label>
+     <input type="radio" id="AHDSR" name="envelope" value="CSS">
+     <label for="AHDSR">AHDSR</label>  
+     <input type="radio" id="DADSR" name="envelope" value="DADSR">
+     <label for="DADSR">DADSR</label>
+  </form>
   </div><br>
  
-  <div id = "tut" style = "color:black; width:460px; visibility:hidden; height:560px;
-    position:absolute; right:2%; top:7%; overflow:auto">
+  <div id = "tut" style = "color:black; width:460px; visibility:hidden; height:560px; position:absolute; right:2%; top:7%; overflow:auto">
     <img src="intro.png" style="width:90%">
     <h3>Required: Root+Chord+Scale</h3>
     <h4 style = "color:rgb(30, 54, 116)"><i>E.g., C9, Cm7, Cdim5, Caug3</i></h4>
@@ -98,4 +116,3 @@
   <script src = "main.js"></script>
 </body>
 </html>
-

@@ -127,6 +127,22 @@ function genSequence(note, beats, tempo) {
     return sequence;
 }
 
+let wave = 'sine';
+var waveform = document.getElementById("Waveform").waveform;
+for (var i = 0; i < waveform.length; i++) {
+    waveform[i].onclick = function() {
+        wave = this.value;
+    } 
+}
+
+let envelope = "AD";
+var Envelope = document.getElementById("Envelope").envelope;
+for (var i = 0; i < waveform.length; i++) {
+    Envelope[i].onclick = function() {
+        envelope = this.value;
+    } 
+}
+
 const playButton = document.getElementById('play');
 playButton.addEventListener("click", function () {
     code = document.getElementById('code').value;
@@ -155,20 +171,35 @@ function midiToFreq(m) {
 function playNotes(noteList) {
     audioCtx = new (window.AudioContext || window.webkitAudioContext);
     osc = audioCtx.createOscillator();
+    osc.type = wave;
     gainNode = audioCtx.createGain();
     osc.connect(gainNode).connect(audioCtx.destination);
     osc.start();
     gainNode.gain.value = 0;
     noteList.forEach(note => {
-        playNote(note);
+        mode = Math.round(Math.random(1));
+        if (envelope == "AD") {
+            if (mode == 0) {
+                playAD(note);
+            }
+            else {
+                playADbyLinear(note) 
+            }
+        }
     }); 
 }
 
-function playNote(note) {
+function playAD(note) {
     offset = 1;
     gainNode.gain.setTargetAtTime(0.7, note.startTime + offset, 0.01)
-    osc.frequency.setTargetAtTime(midiToFreq(note.note),
-    note.startTime + offset, 0.001)
+    osc.frequency.setTargetAtTime(midiToFreq(note.note), note.startTime + offset, 0.001)
+    gainNode.gain.setTargetAtTime(0, note.endTime + offset - 0.05, 0.01)
+}
+
+function playADbyLinear(note) {
+    offset = 1;
+    gainNode.gain.linearRampToValueAtTime(0.7, note.startTime + offset + 0.01)
+    osc.frequency.setTargetAtTime(midiToFreq(note.note), note.startTime + offset, 0.001)
     gainNode.gain.setTargetAtTime(0, note.endTime + offset - 0.05, 0.01)
 }
 
