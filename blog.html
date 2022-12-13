@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <a href="./index.html">Back</a><br><br>
+    <h1 style = "text-align:center">Live Coding: Chord-Scale(rough draft)</h1><br>
+    <i>Dec 14, 2022</i><br>
+    <i>Sabrina(Xinyu) Shen</i><br><br><br>
+  </head>
+
+  <body style = "width:50%; margin-left:25%; margin-right:25%">
+    <div style = "text-align:center">
+
+    <h3>Introduction/Motivation</h3>
+    <p>Design a live coding language that employs music theory and its notation</p>
+    <p>STEM shares a similarity with music is that they both kinda work on a system of notation</p>
+    <p>The homework projects we've worked on have taught us many useful techniques</p>
+    <p>I want to make the command as minimal as possible while it still offers many features for users to have fun with</p>
+    <p>.....</p><br>
+
+    <h3>Features on the Interface</h3>
+    <p>The interface has a textarea where input live code</p>
+    <p>The code is composed of at least one unit</p>
+    <p>The requirements of the units: root + chord + scale</p>
+    <p>E.g., ...</p>
+    <P>Users can also determine other features: Beats@Root + Chord + Scale ' Inversion[Loops]</P>
+    <p>E.g., ...</p>
+    <p>Will go into details of them soon.</p>
+    <p>Under the textarea, there is a slider of tempo</p>
+    <p>Users can have multiple choices with the envelope</p>
+    <p>As well as one choice of sound waveform</p>
+    <p>Two buttons under: Tutorials and Play</p>
+    <p>Click "Tutorials" for basic informaiton</p>
+    <p>Click "Play" when you have input code all set and are ready to play it</p>
+    <p>The very top of the page has an example to copy</p>
+    <p>Just for demonstration: you can play simple or more complicated then that!</p><br>
+
+
+    <h3>Music Theory Utilized</h3>
+    <p>1. Beats</p>
+    <p>4 as wholenote, 2 as halfnote, 1 as default quarter note.</p>
+    <p>2. Root Key</p>
+    <p>pick one from an octave (C4-B4)</p>
+    <p>3. Chord choice</p>
+    <p>Major, minor, diminished, augmented. And how they differ</p>
+    <p>4. Scale</p>
+    <p>Root, ... , nth factor</p>
+    <p>5. Inversion</p>
+    <p>The inversion is made by moving the first or the first few elements up by an octave</p>
+    <p>For example, if inversion = 1, then just move the root key up by an octave</p>
+    <p>If 2, then move the root and the 3rd note up by an octave</p>
+    <p>6. Loop</p>
+    <p>simply how many repetitions</p><br>
+
+    <h3>How Command is Processed</h3>
+    <p>If beats inputed</p>
+    <p>Beats: split by @, the first element of the array</p>
+    <p>If loops inputed</p>
+    <p>Loops: split by [, the second element of this array, with "]"removed</p>
+    <p>If inversion inputed</p>
+    <p>Inversion: split by ', the second element of this array</p>
+    <p>Optional features: Beats, Loops, and Inversion are either default or obtained</p>
+    <p>What left is required: Root, Chord, Scale</p>
+    <p>The last character of the remaining is the scale number</p>
+    <p>using a math formula to convert the scale into a number of notes</p>
+    <p>slice the scale number -> The root key + chord choice</p>
+    <p>Take the root key and map it onto the pitch</p>
+    <p>With the root pitch, extend it to the corresponding chord-scale according to its chord</p>
+    <p>As we get the basic chord-scale, we start doing inversion</p>
+    <p>Take the number of inversion as x, we take the values of first x element(s), then pitch+12 add to the end</p>
+    <p>Then slice out the first x elements</p>
+    <p>What is known now: the inverted or basic chord-scale with loops and beats if given</p>
+    <p>Find each note the start time and endtime. The first note starts by the start time 0</p>
+    <p>and the end time is determined by beats/tempo.</p>
+    <p>diff between beats and tempo: tempo is the same for all notes, beats differ each note's length</p>
+    <p>The greater beats is, the note plays slower</p>
+    <p>The greater tempo is, the entire melody plays faster</p>
+    <p>Then the notelist with note pitch, start time, and end time, which would be ready to play with osc</p>
+
+    <h4>Walk through ENVELOPES implementation</h4> 
+    <p>1. AD</p>
+    <p>[image]</p>
+    <p>How implemented</p>
+    <p>Description of the sound it shapes: simple, rough, staccato</p>
+    <p>2. ADSR</p>
+    <p>[image]</p>
+    <p>How implemented</p>
+    <p>Description of the sound it shapes: sustaining, rich, strong</p>
+    <p>3. DAHDSR</p>
+    <p>[image]</p>
+    <p>How implemented</p>
+    <p>Description of the sound it shapes: softer, well-shaped, lilting</p>
+    <p>Users can select up to 3 envelopes</p>
+    <p>used math.random to give a number, which calls a random envelope for every single note</p>
+    <p>With 2 or 3 envelopes checked, the melody will sound more variable</p><br><br><br>
+
+    <h4><a href="index.html">LET'S TRY</a></h4><br>
+
+</div>
+</body>
+</html>

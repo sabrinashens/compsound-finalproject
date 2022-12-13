@@ -48,12 +48,13 @@
 
 <body>
   <br><br>
-  <textarea id="code" style="width:900px; background-color:white; height:645.5px"></textarea><br>
+  <textarea id="code" style="width:900px; background-color:white; height:565.5px"></textarea><br>
   <div class="slidecontainer">
     <label for = "tempo">TEMPO:</label>
     <input type="range" min="50" max="150" value="100" class="slider" id="tempo">
-    <i style="color:white">__________________________________________________________________________</i>
+    <i style="color:white">____________________________________________________________________</i>
     <button id = "tutorial" onclick="displayText()" style = "background-color:white; cursor: pointer">Tutorials</button>
+    <button id = "blog" onclick="openBlog()" style = "background-color:white; cursor: pointer">Blog</button>
     <button id = "play" style = "background-color:white; cursor: pointer">Play</button><br>
     <form id="Envelope">
       <l>ENVELOPE:</l>
@@ -71,7 +72,7 @@
       <input type="radio" id="triangle" name="waveform" value="triangle">
       <label for="triangle">TRIANGLE</label>
       <input type="radio" id="square" name="waveform" value="square">
-      <label for="square">SQUARE</label>    
+      <label for="square">SQUARE</label>   
     </form>
   </div>
  
@@ -108,7 +109,8 @@
     <p><i>'1:  (root, 3rd, ...) => (3rd, ..., root + an octave) </i></p>
     <p><i>'2:  (root, 3rd, ...) => (..., root + an octave, 3rd + an octave) </i></p>
     <p><i>...</i></p><br>
-    <h4> ❒ Loop: \ or [ℤ+] </h4>
+    <h4> ❒ Loop: \ or [ℤ+] </h4><br><br>
+    <h4>Check out <a href="blog.html">my blog</a> for more details!</h4>
     </div><br><br>
   <script src = "main.js"></script>
 </body>

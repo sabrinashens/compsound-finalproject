@@ -268,6 +268,10 @@ function copyExample() {
     document.getElementById('copy').innerHTML = "Copied";
 }
 
+function openBlog() {
+    window.open("blog.html")
+}
+
 buttonState = false;
 function displayText() {
     if (buttonState == false) {
