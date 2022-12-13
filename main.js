@@ -135,12 +135,14 @@ for (var i = 0; i < waveform.length; i++) {
     } 
 }
 
-let envelope = "AD";
-var Envelope = document.getElementById("Envelope").envelope;
-for (var i = 0; i < waveform.length; i++) {
-    Envelope[i].onclick = function() {
-        envelope = this.value;
-    } 
+function selectEnvelope() {
+    newArray = [];
+    var arr = ["AD", "ADSR", "DAHDSR"];
+    for( var i = 0; i < arr.length; i++) {  
+        if (document.getElementById(arr[i]).checked == true) {
+       		newArray.push(arr[i])     
+        }
+    }
 }
 
 const playButton = document.getElementById('play');
@@ -176,31 +178,86 @@ function playNotes(noteList) {
     osc.connect(gainNode).connect(audioCtx.destination);
     osc.start();
     gainNode.gain.value = 0;
+    selectEnvelope()    
+    console.log(newArray)
     noteList.forEach(note => {
-        mode = Math.round(Math.random(1));
-        if (envelope == "AD") {
-            if (mode == 0) {
-                playAD(note);
-            }
-            else {
-                playADbyLinear(note) 
-            }
-        }
+        playEnvelope(newArray, note) 
     }); 
 }
 
-function playAD(note) {
-    offset = 1;
-    gainNode.gain.setTargetAtTime(0.7, note.startTime + offset, 0.01)
-    osc.frequency.setTargetAtTime(midiToFreq(note.note), note.startTime + offset, 0.001)
-    gainNode.gain.setTargetAtTime(0, note.endTime + offset - 0.05, 0.01)
+function playEnvelope(newArray, note) {
+    modeforTwo = Math.round(Math.random());
+    modeforThree = Math.round(Math.random()*3)
+    if (newArray.length == 1 && newArray[0] == "AD") {
+        playAD(note) 
+    }
+    else if (newArray.length == 1 && newArray[0] == "ADSR") {
+        playADSR(note)
+    }
+    else if (newArray.length == 1 && newArray[0] == "DAHDSR") {
+        playDAHDSR(note)
+    }
+
+    else if (newArray.length == 2 && newArray[0] == "AD" && newArray[1] == "ADSR") {
+        if (modeforTwo == 0) {
+            playAD(note) 
+    }
+        else {
+            playADSR(note)
+        }
+     }
+     else if (newArray.length == 2 && newArray[0] == "AD" && newArray[1] == "DAHDSR") {
+        if (modeforTwo == 0) {
+            playAD(note) 
+        }
+        else {
+            playDAHDSR(note)
+        }
+     }
+     else if (newArray.length == 2 && newArray[0] == "ADSR" && newArray[1] == "DAHDSR") {
+        if (modeforTwo == 0) {
+            playADSR(note)
+        }
+        else {
+            playDAHDSR(note)
+        }
+    }
+
+    else if(newArray.length == 3){
+        if (modeforThree == 1) {
+            playAD(note)
+        }
+        else if (modeforThree == 2) {
+            playADSR(note)
+        }
+        else {
+            playDAHDSR(note)
+        }
+    }
 }
 
-function playADbyLinear(note) {
-    offset = 1;
-    gainNode.gain.linearRampToValueAtTime(0.7, note.startTime + offset + 0.01)
-    osc.frequency.setTargetAtTime(midiToFreq(note.note), note.startTime + offset, 0.001)
-    gainNode.gain.setTargetAtTime(0, note.endTime + offset - 0.05, 0.01)
+function playAD(note) {
+    osc.frequency.setTargetAtTime(midiToFreq(note.note), note.startTime + 1, 0.001);
+    gainNode.gain.setTargetAtTime(0.7, note.startTime + 1, 0.01)
+    gainNode.gain.setTargetAtTime(0, note.endTime + 1 - 0.05, 0.01)
+}
+
+function playADSR(note) {
+    osc.frequency.setTargetAtTime(midiToFreq(note.note), note.startTime + 1, 0.001);
+    gainNode.gain.linearRampToValueAtTime(0.7, note.startTime + 1 + 0.03) //A
+    gainNode.gain.linearRampToValueAtTime(0.5, note.startTime + 1 + 0.05) //D
+    gainNode.gain.setTargetAtTime(0.5, note.startTime + 1 + 0.05, 0.2) //S
+    gainNode.gain.setTargetAtTime(0, note.endTime + 1 - 0.03, 0.05) //R
+}
+
+function playDAHDSR(note) {
+    osc.frequency.setTargetAtTime(midiToFreq(note.note), note.startTime + 1, 0.001);
+    gainNode.gain.setTargetAtTime(0, note.startTime + 1, 0.02) //D
+    gainNode.gain.linearRampToValueAtTime(0.7, note.startTime + 1 + 0.03) //A
+    gainNode.gain.setTargetAtTime(0.7, note.startTime + 1 + 0.03, 0.02) //H
+    gainNode.gain.linearRampToValueAtTime(0.6, note.startTime + 1 + 0.06) //D
+    gainNode.gain.setTargetAtTime(0.4, note.startTime + 1 + 0.06, 0.1) //S
+    gainNode.gain.setTargetAtTime(0, note.endTime + 1 - 0.04, 0.03) //R
 }
 
 function copyExample() {
@@ -226,3 +283,9 @@ function displayText() {
         buttonState = false;
     }
 }
+
+document.getElementById("AD").addEventListener('change', e => {
+    if(e.target.checked) {
+        AD = true;
+    }
+})
