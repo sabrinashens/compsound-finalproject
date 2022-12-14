@@ -21,8 +21,8 @@ let notetoPitch = {
 
 let majorScale = [0, 4, 7, 11, 14];
 let minorScale = [0, 3, 7, 10, 14];
-let diminishedScale = [0, 3, 6, 11, 14];
-let augmentedScale = [0, 4, 7, 10, 14];
+let diminishedScale = [0, 3, 6, 9, 14];
+let augmentedScale = [0, 4, 8, 10, 14];
 
 
 function parseCode(code) {

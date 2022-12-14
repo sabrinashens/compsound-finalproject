@@ -3,56 +3,64 @@
   <head>
     <meta charset="UTF-8" />
     <a href="./index.html">Back</a><br><br>
-    <h1 style = "text-align:center">Live Coding: Chord-Scale(rough draft)</h1><br>
+    <h2 style = "text-align:center">Live Coding: Chord-Scale</h2><br>
     <i>Dec 14, 2022</i><br>
     <i>Sabrina(Xinyu) Shen</i><br><br><br>
   </head>
 
   <body style = "width:50%; margin-left:25%; margin-right:25%">
-    <div style = "text-align:center">
+    <div>
+    <p>Computer science and music both depend on a system of notations, 
+      which is created to facilitate structured communication within its domain.</p>
+    <p>Thanks to the class Computational Sound, 
+      offered in the department of CS at Barnard Collage, 
+      we’ve learned to perform and implement with live coding environments. 
+      For this project, 
+      I aimed to continue this and design a live coding language 
+      that employs the collection of musical symbols in the realm of music.</p><br><br>
 
-    <h3>Introduction/Motivation</h3>
-    <p>Design a live coding language that employs music theory and its notation</p>
-    <p>STEM shares a similarity with music is that they both kinda work on a system of notation</p>
-    <p>The homework projects we've worked on have taught us many useful techniques</p>
-    <p>I want to make the command as minimal as possible while it still offers many features for users to have fun with</p>
-    <p>.....</p><br>
+    <img src="./img/Interface.png" style="width:100%">
+    <p style = "text-align:center; font-size: 80%;">Figure 1: What's in Interface</p><br>
+    <p><a href="./index.html">The Interface</a>
+       has a text area where allows user to enter a space-separated list of musical symbols. 
+       Each chord symbol requires the features: 
+       <b>Root+Chord+Scale</b>, 
+       e.g., <i>Cm9(C minor 9th) or A7(A major 7th)</i>. 
+       There are some optional features following the structure 
+       <b>Beats@Root+Chord+Scale’Inversion[Loops]</b>, 
+       e.g., <i>4@Cm9(note length of 4), Cm9’1(first inversion), or Cm9[2](Repeats twice)</i>. 
+       I will walk you through the details later. 
+       Under the text area, 
+       there is a slider changing the tempo of the music. 
+       User can also select a waveform and at least one envelope(s) of the oscillating signal. 
+       Remember to adjust the parameters before clicking “Play”! </p><br><br>
 
-    <h3>Features on the Interface</h3>
-    <p>The interface has a textarea where input live code</p>
-    <p>The code is composed of at least one unit</p>
-    <p>The requirements of the units: root + chord + scale</p>
-    <p>E.g., ...</p>
-    <P>Users can also determine other features: Beats@Root + Chord + Scale ' Inversion[Loops]</P>
-    <p>E.g., ...</p>
-    <p>Will go into details of them soon.</p>
-    <p>Under the textarea, there is a slider of tempo</p>
-    <p>Users can have multiple choices with the envelope</p>
-    <p>As well as one choice of sound waveform</p>
-    <p>Two buttons under: Tutorials and Play</p>
-    <p>Click "Tutorials" for basic informaiton</p>
-    <p>Click "Play" when you have input code all set and are ready to play it</p>
-    <p>The very top of the page has an example to copy</p>
-    <p>Just for demonstration: you can play simple or more complicated then that!</p><br>
+    <p style = "text-align:center">As I mentioned, the required features of each unit are <b><i>Root, Chord, and Scale. </b></i></p>
 
+    <p style = "text-align:center"><b><i>Root</i></b> is a root key. The availble root keys are C, C#, D, D#, E, F, G, G#, A, A#, B.</p>
+    <img src="./img/root.png" style="width:100%">
+    <p style = "text-align:center; font-size: 80%;">Figure 2: Piano Octave</p>
 
-    <h3>Music Theory Utilized</h3>
-    <p>1. Beats</p>
-    <p>4 as wholenote, 2 as halfnote, 1 as default quarter note.</p>
-    <p>2. Root Key</p>
-    <p>pick one from an octave (C4-B4)</p>
-    <p>3. Chord choice</p>
-    <p>Major, minor, diminished, augmented. And how they differ</p>
-    <p>4. Scale</p>
-    <p>Root, ... , nth factor</p>
-    <p>5. Inversion</p>
-    <p>The inversion is made by moving the first or the first few elements up by an octave</p>
-    <p>For example, if inversion = 1, then just move the root key up by an octave</p>
-    <p>If 2, then move the root and the 3rd note up by an octave</p>
-    <p>6. Loop</p>
-    <p>simply how many repetitions</p><br>
+    <p style = "text-align:center"><b><i>Chord</i></b> is the chord quality. The available qualities are Major, Minor, Diminished, Augmented.</p>
+    <img src="./img/chord.png" style="width:100%">
+    <p style = "text-align:center; font-size: 80%">Figure 3: Chord Symbols</p>
 
-    <h3>How Command is Being Processed</h3>
+    <p style = "text-align:center"><b><i>Scale</i></b> starts at the root and counts up until <i>n</i>th degree.</p>
+    <img src="./img/scale.png" style="width:100%">
+    <p style = "text-align:center; font-size: 80%">Figure 4: Scale Symbols</p><br>
+
+    <p style = "text-align:center">The optional features are <b><i>Beats, Inversion, and Loops.</b></i></p>
+    <p style = "text-align:center"><b>Beats</b> is the note length, by entering a positive integer with @. E.g., 2@.</p>
+    <img src="./img/beats.png" style="width:100%">
+    <p style = "text-align:center; font-size: 80%">Figure 5: Suggested beats</p>
+    
+    <p style = "text-align:center"><b>Inversion</b> is made by moving first <i>n</i> note(s) up by an octave, by entering a positive integer with '. E.g., '2.</p>
+    <img src="./img/inversion.png" style="width:100%">
+    <p style = "text-align:center; font-size: 80%">Figure 6: Inversion Symbols</p>
+
+    <p style = "text-align:center"><b>Loops</b> is how many time the unit will be played, by entering [<i>n</i>], e.g., [2] means to play twice.</p>
+
+    <h3 style = "text-align:center">Implementation: Code</h3>
     <p>If beats inputed</p>
     <p>Beats: split by @, the first element of the array</p>
     <p>If loops inputed</p>
@@ -77,7 +85,7 @@
     <p>The greater tempo is, the entire melody plays faster</p>
     <p>Then the notelist with note pitch, start time, and end time, which would be ready to play with osc</p>
 
-    <h4>Walk through ENVELOPES implementation</h4> 
+    <h4 style = "text-align:center">Implementation: Envelopes</h4> 
     <p>1. AD</p>
     <p>[image]</p>
     <p>How implemented</p>
