@@ -268,6 +268,14 @@ function copyExample() {
     document.getElementById('copy').innerHTML = "Copied";
 }
 
+function copyExample2() {
+    var copyText = document.getElementById("example2");
+    navigator.clipboard.writeText(copyText.value);
+    document.getElementById('copy2').style.color = "white";
+    document.getElementById('copy2').style.backgroundColor = "black";
+    document.getElementById('copy2').innerHTML = "Copied";
+}
+
 function openBlog() {
     window.open("blog.html")
 }
