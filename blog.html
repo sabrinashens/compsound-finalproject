@@ -9,7 +9,7 @@
   </head>
 
   <body style = "width:50%; margin-left:25%; margin-right:25%">
-    <div>
+    <h3 style = "text-align:center">Introduction</h3> 
     <p>Computer science and music both depend on a system of notations, 
       which is created to facilitate structured communication within its domain.</p>
     <p>Thanks to the class Computational Sound, 
@@ -17,17 +17,17 @@
       we’ve learned to perform and implement with live coding environments. 
       For this project, 
       I aimed to continue this and design a live coding language 
-      that employs the collection of musical symbols in the realm of music.</p><br><br>
+      that employs the collection of musical symbols in the realm of music.</p><br>
 
     <img src="./img/Interface.png" style="width:100%">
-    <p style = "text-align:center; font-size: 80%;">Figure 1: What's in Interface</p><br>
-    <p><a href="./index.html">The Interface</a>
+    <p style = "text-align:center; font-size: 80%;">Figure 1: What's in Interface</p>
+    <p><a href="./index.html">The Interface(figure 1)</a>
        has a text area where allows user to enter a space-separated list of musical symbols. 
        Each chord symbol requires the features: 
        <b>Root+Chord+Scale</b>, 
        e.g., <i>Cm9(C minor 9th) or A7(A major 7th)</i>. 
        There are some optional features following the structure 
-       <b>Beats@Root+Chord+Scale’Inversion[Loops]</b>, 
+       <b>Beats@Root+Chord+Scale’Inversion[Loop]</b>, 
        e.g., <i>4@Cm9(note length of 4), Cm9’1(first inversion), or Cm9[2](Repeats twice)</i>. 
        I will walk you through the details later. 
        Under the text area, 
@@ -35,75 +35,112 @@
        User can also select a waveform and at least one envelope(s) of the oscillating signal. 
        Remember to adjust the parameters before clicking “Play”! </p><br><br>
 
+    <h3 style = "text-align:center">Musical Symbols</h3> 
     <p style = "text-align:center">As I mentioned, the required features of each unit are <b><i>Root, Chord, and Scale. </b></i></p>
 
-    <p style = "text-align:center"><b><i>Root</i></b> is a root key. The availble root keys are C, C#, D, D#, E, F, G, G#, A, A#, B.</p>
+    <p style = "text-align:center"><b><i>Root</i></b> is a root key. 
+      The availble root keys are C, C#, D, D#, E, F, G, G#, A, A#, B.</p>
     <img src="./img/root.png" style="width:100%">
-    <p style = "text-align:center; font-size: 80%;">Figure 2: Piano Octave</p>
+    <p style = "text-align:center; font-size: 80%;">Figure 2: Piano Octave</p><br>
 
-    <p style = "text-align:center"><b><i>Chord</i></b> is the chord quality. The available qualities are Major, Minor, Diminished, Augmented.</p>
+    <p style = "text-align:center"><b><i>Chord</i></b> is the chord quality. 
+      The available qualities are Major, Minor, Diminished, Augmented.</p>
     <img src="./img/chord.png" style="width:100%">
-    <p style = "text-align:center; font-size: 80%">Figure 3: Chord Symbols</p>
+    <p style = "text-align:center; font-size: 80%">Figure 3: Chord Symbols</p><br>
 
     <p style = "text-align:center"><b><i>Scale</i></b> starts at the root and counts up until <i>n</i>th degree.</p>
     <img src="./img/scale.png" style="width:100%">
     <p style = "text-align:center; font-size: 80%">Figure 4: Scale Symbols</p><br>
 
-    <p style = "text-align:center">The optional features are <b><i>Beats, Inversion, and Loops.</b></i></p>
+    <p style = "text-align:center">The optional features are <b><i>Beats, Inversion, and Loop.</b></i></p>
     <p style = "text-align:center"><b>Beats</b> is the note length, by entering a positive integer with @. E.g., 2@.</p>
     <img src="./img/beats.png" style="width:100%">
-    <p style = "text-align:center; font-size: 80%">Figure 5: Suggested beats</p>
+    <p style = "text-align:center; font-size: 80%">Figure 5: Suggested beats</p><br>
     
-    <p style = "text-align:center"><b>Inversion</b> is made by moving first <i>n</i> note(s) up by an octave, by entering a positive integer with '. E.g., '2.</p>
+    <p style = "text-align:center"><b>Inversion</b> is made by moving first <i>n</i> note(s) up by an octave, 
+      by entering a positive integer with '. E.g., '2.</p>
     <img src="./img/inversion.png" style="width:100%">
-    <p style = "text-align:center; font-size: 80%">Figure 6: Inversion Symbols</p>
+    <p style = "text-align:center; font-size: 80%">Figure 6: Inversion Symbols</p><br>
 
-    <p style = "text-align:center"><b>Loops</b> is how many time the unit will be played, by entering [<i>n</i>], e.g., [2] means to play twice.</p>
+    <p style = "text-align:center"><b>Loop</b> is how many time the unit will be played, 
+      by entering [<i>n</i>], e.g., [2] means to play twice.</p><br><br>
 
-    <h3 style = "text-align:center">Implementation: Code</h3>
-    <p>If beats inputed</p>
-    <p>Beats: split by @, the first element of the array</p>
-    <p>If loops inputed</p>
-    <p>Loops: split by [, the second element of this array, with "]"removed</p>
-    <p>If inversion inputed</p>
-    <p>Inversion: split by ', the second element of this array</p>
-    <p>Optional features: Beats, Loops, and Inversion are either default or obtained</p>
-    <p>What left is required: Root, Chord, Scale</p>
-    <p>The last character of the remaining is the scale number</p>
-    <p>using a math formula to convert the scale into a number of notes</p>
-    <p>slice the scale number -> The root key + chord choice</p>
-    <p>Take the root key and map it onto the pitch</p>
-    <p>With the root pitch, extend it to the corresponding chord-scale according to its chord</p>
-    <p>As we get the basic chord-scale, we start doing inversion</p>
-    <p>Take the number of inversion as x, we take the values of first x element(s), then pitch+12 add to the end</p>
-    <p>Then slice out the first x elements</p>
-    <p>What is known now: the inverted or basic chord-scale with loops and beats if given</p>
-    <p>Find each note the start time and endtime. The first note starts by the start time 0</p>
-    <p>and the end time is determined by beats/tempo.</p>
-    <p>diff between beats and tempo: tempo is the same for all notes, beats differ each note's length</p>
-    <p>The greater beats is, the note plays slower</p>
-    <p>The greater tempo is, the entire melody plays faster</p>
-    <p>Then the notelist with note pitch, start time, and end time, which would be ready to play with osc</p>
+    <h3 style = "text-align:center">Implementation</h3>
+    <h4 style = "text-align:center">Beats@Root+Chord+Scale’Inversion[Loop]</h4>
+    <p>I used string.at() to detect if the optional features are included. 
+        If code.at(1), which is the second character, is @, then beats is included.
+        If code.at(-1), which is the last character, is ], then loop is included.
+        Then I used string.split("[") to split the string into two substrings, 
+        ["Beats@Root+Chord+Scale'Inversion", "[Loop"].
+        If the firstSubstring.at(-2), which is the second to last character, is ', then inversion is included.
+        Using string.split() and string.slice(), the values of <b><i>Beats, Loop, Inversion</i></b> can be obtained</p>
 
-    <h4 style = "text-align:center">Implementation: Envelopes</h4> 
-    <p>1. AD</p>
-    <p>[image]</p>
-    <p>How implemented</p>
-    <p>Description of the sound it shapes: simple, rough, staccato</p>
-    <p>2. ADSR</p>
-    <p>[image]</p>
-    <p>How implemented</p>
-    <p>Description of the sound it shapes: sustaining, rich, strong</p>
-    <p>3. DAHDSR</p>
-    <p>[image]</p>
-    <p>How implemented</p>
-    <p>Description of the sound it shapes: softer, well-shaped, lilting</p>
-    <p>Users can select up to 3 envelopes</p>
-    <p>used math.random to give a number, which calls a random envelope for every single note</p>
-    <p>With 2 or 3 envelopes checked, the melody will sound more variable</p><br><br><br>
+    <p>What remains is Root+Chord+Scale, and its last character is the degree value. 
+      The formula below(figure 7) is to convert the degree of the scale into the number of notes. 
+      For instance, if the scale degree = 5, then (5+1)/2 = 3, which means there are 3 notes within the scale.</p>
+    <img src="./img/factorConversion.png" style="width:100%">
+    <p style = "text-align:center; font-size: 80%">Figure 7: Degree Conversion</p>
 
-    <h4><a href="index.html">LET'S TRY</a></h4><br>
+    <p>Now we finally get to the core: Root+Chord!
+      Remember that a major chord has no symbol, 
+      a minor chord has the symbol of "m", 
+      a diminished chord has the symbol of "dim", 
+      and an augmented chord has the symbol of "aug".
+      Use string.at() to detect the chord quality, and string.slice() the chord symbol, 
+      which helps us obtain the root key. </p>
+    
+    <p>According to the "noteToPitch" map (figure 8), 
+      the root key is mapped onto the corresponding pitch value.</p>
+    <img src="./img/noteToPitch.png" style="width:100%">
+    <p style = "text-align:center; font-size: 80%">Figure 8: The Note to Pitch Map</p>
+    <p>Given the scale of the detected chord quality (figure 9) and the number of notes,
+      a for loop is utilized to map every note in the scale onto right pitches.
+      Then the pitch list is obtained.</p>
+    <img src="./img/chordScale.png" style="width:100%">
+    <p style = "text-align:center; font-size: 80%">Figure 9: Scales for four chord qualities</p>
+    <img src="./img/minorChord.png" style ="width:100%">
+    <p style = "text-align:center; font-size: 80%">Figure 10: Example of mapping a minor chord</p> 
+    
 
-</div>
+    <p>As we get the pitch-list, we start doing inversion. 
+      Take the value of inversion as <i>i</i>, 
+      and move the <i>1st</i> ... <i>i</i>th note up by adding 12 to the pitch, 
+      which is an octave. Lastly, slice the first <i>i</i> element(s) and the inverted pitch-list is returned.</p>
+    <img src="./img/inversion1.png" style="width:100%">
+    <img src="./img/inversion2.png" style="width:100%">
+    <p style = "text-align:center; font-size: 80%">Figure 11: Inversion Operation</p><br><br>
+
+    <p>What's also worth mentioning is the envelopes. 
+      Three envelopes are available: Default, ADSR, and DAHDSR. 
+      You will enjoy a more complex and variable modulation if you select more than one envelopes.
+      If so, the envelope of every input unit will be randomly selected. </p><br>
+
+    <p style = "text-align:center"><b>DEFAULT: Abrupt, Rough and Staccato</b></p>
+    <p>This envelope provides less nuanced response. 
+      It reaches to maximum level immediately at certain time and drops back to the minimum, 
+      without a sustain stage</p>
+    <img src="./img/default.png" style="width:100%">
+    <p style = "text-align:center; font-size: 80%">Figure 12: Default Envelope</p><br>
+
+    <p style = "text-align:center"><b>ADSR: Rich, Sustained, and Strong</b></p>
+    <p>This four-stage envelope is the most common one. 
+      It ramps linearly up to the maximum level, decays a little lower,
+      and gradually goes into a quieter sustain stage.
+      It remains at the defined sustain level for a while, 
+      so the sound is more consistent and gradational. </p>
+    <img src="./img/ADSR.png" style="width:100%">
+    <p style = "text-align:center; font-size: 80%">Figure 13: ADSR Enveliope</p><br>
+
+    <p style = "text-align:center"><b>DAHDSR: Well-shaped, Soft, Lilting</b></p>
+    <p>This envelope has an addtional decay stage before attack, letting it starts gentler.
+      There is a hold stage after attack, 
+      which allows it to stay at the maximum level for a fixed period of time,
+      and it then decreases to the second decay stage. The rest is similar to ADSR.
+    </p>
+    <img src="./img/DAHDSR.png" style="width:100%">
+    <p style = "text-align:center; font-size: 80%">Figure 14: DAHDSR Envelope</p><br><br><br>
+
+    <h4 style = "text-align:center"><a href="index.html">Live Coding: Chord Scale</a></h4><br>
+
 </body>
 </html>

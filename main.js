@@ -137,7 +137,7 @@ for (var i = 0; i < waveform.length; i++) {
 
 function selectEnvelope() {
     newArray = [];
-    var arr = ["AD", "ADSR", "DAHDSR"];
+    var arr = ["DEFAULT", "ADSR", "DAHDSR"];
     for( var i = 0; i < arr.length; i++) {  
         if (document.getElementById(arr[i]).checked == true) {
        		newArray.push(arr[i])     
@@ -188,8 +188,8 @@ function playNotes(noteList) {
 function playEnvelope(newArray, note) {
     modeforTwo = Math.round(Math.random());
     modeforThree = Math.round(Math.random()*3)
-    if (newArray.length == 1 && newArray[0] == "AD") {
-        playAD(note) 
+    if (newArray.length == 1 && newArray[0] == "DEFAULT") {
+        playDefault(note) 
     }
     else if (newArray.length == 1 && newArray[0] == "ADSR") {
         playADSR(note)
@@ -198,17 +198,17 @@ function playEnvelope(newArray, note) {
         playDAHDSR(note)
     }
 
-    else if (newArray.length == 2 && newArray[0] == "AD" && newArray[1] == "ADSR") {
+    else if (newArray.length == 2 && newArray[0] == "DEFAULT" && newArray[1] == "ADSR") {
         if (modeforTwo == 0) {
-            playAD(note) 
+            playDefault(note) 
     }
         else {
             playADSR(note)
         }
      }
-     else if (newArray.length == 2 && newArray[0] == "AD" && newArray[1] == "DAHDSR") {
+     else if (newArray.length == 2 && newArray[0] == "DEFAULT" && newArray[1] == "DAHDSR") {
         if (modeforTwo == 0) {
-            playAD(note) 
+            playDefault(note) 
         }
         else {
             playDAHDSR(note)
@@ -225,7 +225,7 @@ function playEnvelope(newArray, note) {
 
     else if(newArray.length == 3){
         if (modeforThree == 1) {
-            playAD(note)
+            playDefault(note)
         }
         else if (modeforThree == 2) {
             playADSR(note)
@@ -236,7 +236,7 @@ function playEnvelope(newArray, note) {
     }
 }
 
-function playAD(note) {
+function playDefault(note) {
     osc.frequency.setTargetAtTime(midiToFreq(note.note), note.startTime + 1, 0.001);
     gainNode.gain.setTargetAtTime(0.7, note.startTime + 1, 0.01)
     gainNode.gain.setTargetAtTime(0, note.endTime + 1 - 0.05, 0.01)
@@ -255,8 +255,8 @@ function playDAHDSR(note) {
     gainNode.gain.setTargetAtTime(0, note.startTime + 1, 0.02) //D
     gainNode.gain.linearRampToValueAtTime(0.7, note.startTime + 1 + 0.03) //A
     gainNode.gain.setTargetAtTime(0.7, note.startTime + 1 + 0.03, 0.02) //H
-    gainNode.gain.linearRampToValueAtTime(0.6, note.startTime + 1 + 0.06) //D
-    gainNode.gain.setTargetAtTime(0.4, note.startTime + 1 + 0.06, 0.1) //S
+    gainNode.gain.linearRampToValueAtTime(0.5, note.startTime + 1 + 0.06) //D
+    gainNode.gain.setTargetAtTime(0.5, note.startTime + 1 + 0.06, 0.1) //S
     gainNode.gain.setTargetAtTime(0, note.endTime + 1 - 0.04, 0.03) //R
 }
 
@@ -287,9 +287,3 @@ function displayText() {
         buttonState = false;
     }
 }
-
-document.getElementById("AD").addEventListener('change', e => {
-    if(e.target.checked) {
-        AD = true;
-    }
-})
