@@ -23,10 +23,10 @@
     <p style = "text-align:center; font-size: 80%;">Figure 1: What's in Interface</p>
     <p><a href="./index.html">The Interface(figure 1)</a>
        has a text area where allows user to enter a space-separated list of musical symbols. 
-       Each chord symbol requires the features: 
+       Each unit requires the features: 
        <b>Root+Chord+Scale</b>, 
        e.g., <i>Cm9(C minor 9th) or A7(A major 7th)</i>. 
-       There are some optional features following the structure 
+       There are some other options following the structure: 
        <b>Beats@Root+Chord+Scale’Inversion[Loop]</b>, 
        e.g., <i>4@Cm9(note length of 4), Cm9’1(first inversion), or Cm9[2](Repeats twice)</i>. 
        I will walk you through the details later. 
@@ -53,30 +53,29 @@
     <p style = "text-align:center; font-size: 80%">Figure 4: Scale Symbols</p><br>
 
     <p style = "text-align:center">The optional features are <b><i>Beats, Inversion, and Loop.</b></i></p>
-    <p style = "text-align:center"><b>Beats</b> is the note length, by entering a positive integer with @. E.g., 2@.</p>
+    <p style = "text-align:center"><b>Beats</b> is the note length, included by entering a positive integer with @. E.g., 2@.</p>
     <img src="./img/beats.png" style="width:100%">
     <p style = "text-align:center; font-size: 80%">Figure 5: Suggested beats</p><br>
     
     <p style = "text-align:center"><b>Inversion</b> is made by moving first <i>n</i> note(s) up by an octave, 
-      by entering a positive integer with '. E.g., '2.</p>
+      included by entering a positive integer with '. E.g., '2.</p>
     <img src="./img/inversion.png" style="width:100%">
     <p style = "text-align:center; font-size: 80%">Figure 6: Inversion Symbols</p><br>
 
     <p style = "text-align:center"><b>Loop</b> is how many time the unit will be played, 
-      by entering [<i>n</i>], e.g., [2] means to play twice.</p><br><br>
+      included by entering [<i>n</i>], e.g., [2] means to play twice.</p><br><br>
 
-    <h3 style = "text-align:center">Implementation</h3>
-    <h4 style = "text-align:center">Beats@Root+Chord+Scale’Inversion[Loop]</h4>
-    <p>I used string.at() to detect if the optional features are included. 
-        If code.at(1), which is the second character, is @, then beats is included.
-        If code.at(-1), which is the last character, is ], then loop is included.
-        Then I used string.split("[") to split the string into two substrings, 
+    <h3 style = "text-align:center">Implementation: Beats@Root+Chord+Scale’Inversion[Loop]</h3>
+    <p>I used string.at() to detect if the optional features are added within each unit. 
+        If code.at(1), which is the second character, is @, then beats is entered.
+        If code.at(-1), which is the last character, is ], then loop is entered.
+        Then I used string.split("[") to split the code into two substrings, 
         ["Beats@Root+Chord+Scale'Inversion", "[Loop"].
-        If the firstSubstring.at(-2), which is the second to last character, is ', then inversion is included.
+        If the firstSubstring.at(-2), which is the second to last character, is ', then inversion is entered.
         Using string.split() and string.slice(), the values of <b><i>Beats, Loop, Inversion</i></b> can be obtained</p>
 
-    <p>What remains is Root+Chord+Scale, and its last character is the degree value. 
-      The formula below(figure 7) is to convert the degree of the scale into the number of notes. 
+    <p>What remains is Root+Chord+Scale, and its last character is the degree number. 
+      The formula below(figure 7) is used to convert the degree of the scale into the number of notes. 
       For instance, if the scale degree = 5, then (5+1)/2 = 3, which means there are 3 notes within the scale.</p>
     <img src="./img/factorConversion.png" style="width:100%">
     <p style = "text-align:center; font-size: 80%">Figure 7: Degree Conversion</p>
@@ -86,15 +85,15 @@
       a minor chord has the symbol of "m", 
       a diminished chord has the symbol of "dim", 
       and an augmented chord has the symbol of "aug".
-      Use string.at() to detect the chord quality, and string.slice() the chord symbol, 
+      Use string.at() to check the chord quality, and string.slice() the chord symbol, 
       which helps us obtain the root key. </p>
     
     <p>According to the "noteToPitch" map (figure 8), 
       the root key is mapped onto the corresponding pitch value.</p>
     <img src="./img/noteToPitch.png" style="width:100%">
     <p style = "text-align:center; font-size: 80%">Figure 8: The Note to Pitch Map</p>
-    <p>Given the scale of the detected chord quality (figure 9) and the number of notes,
-      a for loop is utilized to map every note in the scale onto right pitches.
+    <p>Given the corresponding scale for the chord quality (figure 9) and the number of notes,
+      a for loop is utilized to map every note within the scale onto right pitches.
       Then the pitch list is obtained.</p>
     <img src="./img/chordScale.png" style="width:100%">
     <p style = "text-align:center; font-size: 80%">Figure 9: Scales for four chord qualities</p>
@@ -104,12 +103,13 @@
 
     <p>As we get the pitch-list, we start doing inversion. 
       Take the value of inversion as <i>i</i>, 
-      and move the <i>1st</i> ... <i>i</i>th note up by adding 12 to the pitch, 
+      and move the <i>1st</i> ... <i>i</i>th note up by adding 12 to the pitch value, 
       which is an octave. Lastly, slice the first <i>i</i> element(s) and the inverted pitch-list is returned.</p>
     <img src="./img/inversion1.png" style="width:100%">
     <img src="./img/inversion2.png" style="width:100%">
     <p style = "text-align:center; font-size: 80%">Figure 11: Inversion Operation</p><br><br>
 
+    <h3 style = "text-align:center">Implementation: Envelopes</h3>
     <p>What's also worth mentioning is the envelopes. 
       Three envelopes are available: Default, ADSR, and DAHDSR. 
       You will enjoy a more complex and variable modulation if you select more than one envelopes.
@@ -117,7 +117,7 @@
 
     <p style = "text-align:center"><b>DEFAULT: Abrupt, Rough and Staccato</b></p>
     <p>This envelope provides less nuanced response. 
-      It reaches to maximum level immediately at certain time and drops back to the minimum, 
+      It reaches to maximum level immediately and drops back to the minimum, 
       without a sustain stage</p>
     <img src="./img/default.png" style="width:100%">
     <p style = "text-align:center; font-size: 80%">Figure 12: Default Envelope</p><br>
@@ -132,7 +132,7 @@
     <p style = "text-align:center; font-size: 80%">Figure 13: ADSR Enveliope</p><br>
 
     <p style = "text-align:center"><b>DAHDSR: Well-shaped, Soft, Lilting</b></p>
-    <p>This envelope has an addtional decay stage before attack, letting it starts gentler.
+    <p>This envelope has an addtional decay stage before attack, letting it starts gentle.
       There is a hold stage after attack, 
       which allows it to stay at the maximum level for a fixed period of time,
       and it then decreases to the second decay stage. The rest is similar to ADSR.
